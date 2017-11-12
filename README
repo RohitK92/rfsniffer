@@ -1,0 +1,19 @@
+Build and install:
+
+sudo apt install gnuradio cmake swig
+
+cd gr-rfsniffer
+mkdir build
+cd build
+cmake ../
+make
+sudo make install
+cd ..
+
+cd compress
+make
+cd ..
+
+cd decompress
+make
+cd ..

@@ -1,0 +1,6 @@
+# Object files
+*.o
+*.obj
+
+# Custom gr block
+gr-rfsniffer/*
