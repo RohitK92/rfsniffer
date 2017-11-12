@@ -3,4 +3,4 @@
 *.obj
 
 # Custom gr block
-gr-rfsniffer/*
+src/gr-rfsniffer/*
