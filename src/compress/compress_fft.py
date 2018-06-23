@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Compress Fft
-# Generated: Tue Oct  3 08:30:12 2017
+# Generated: Wed Jan 17 12:26:31 2018
 ##################################################
 
 from gnuradio import blocks
@@ -33,8 +33,8 @@ class compress_fft(gr.top_block):
         self.rfsniffer_stream_to_vector_overlap_0 = rfsniffer.stream_to_vector_overlap(gr.sizeof_gr_complex, N, N/2)
         self.fft_vxx_0 = fft.fft_vcc(N, True, (window.hanning(N)), True, 1)
         self.blocks_vector_to_stream_0 = blocks.vector_to_stream(gr.sizeof_gr_complex*1, N)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, "capture.iq", False)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, "compress_fft.iq", False)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, "/tmp/capture.iq", False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_gr_complex*1, "/tmp/compress_fft.iq", False)
         self.blocks_file_sink_0.set_unbuffered(False)
 
         ##################################################

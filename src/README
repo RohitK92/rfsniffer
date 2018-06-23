@@ -1,0 +1,35 @@
+=== Build and install ===
+
+sudo apt install gnuradio cmake swig inotify-tools
+
+cd gr-rfsniffer
+mkdir build
+cd build
+cmake ../
+make
+sudo make install
+cd ..
+
+cd compress
+make
+cd ..
+
+cd decompress
+make
+cd ..
+
+=== For AirSpy ===
+
+sudo apt install libusb-1.0-0-dev
+
+git clone https://github.com/airspy/airspyone_host.git
+cd airspyone_host
+mkdir build
+cmake ../
+make
+sudo make install
+
+
+=== For VDL2 ===
+
+make  WITH_RTLSDR=0

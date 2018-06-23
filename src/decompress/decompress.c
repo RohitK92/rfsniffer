@@ -13,8 +13,7 @@
 #define N 400
 #define SHRT_SCALE (1.0/SHRT_MAX)
 
-#define COMPRESS_IQ_FILENAME "compress.iq"
-#define DECOMPRESS_FFT_IQ_FILENAME "decompress_fft.iq"
+#define DECOMPRESS_FFT_IQ_FILENAME "/tmp/decompress_fft.iq"
 
 typedef struct {
   float real;
@@ -27,7 +26,7 @@ typedef struct {
 } complex16;
 
 typedef struct {
-  uint32_t freq;
+  int32_t freq;
   complex16 sample;
 } compressed_sample;
 
@@ -39,13 +38,14 @@ void complex16_to_complex_float(complex_float* cf, complex16* cs, int n) {
 }
 
 int main(int argc, char** argv) {
+  int fft_iter = 0;
   compressed_sample cses[100];
   complex_float fft[N];
 
   memset(fft, 0, sizeof(fft));
 
   int r_fd;
-  if ((r_fd = open(COMPRESS_IQ_FILENAME, O_RDONLY)) < 0) {
+  if ((r_fd = open(argv[1], O_RDONLY)) < 0) {
     perror("open() read file");
     exit(EXIT_FAILURE);
   }
@@ -56,42 +56,44 @@ int main(int argc, char** argv) {
     exit(EXIT_FAILURE);
   }
 
-  int32_t freq_prev = -1;
   do {
     // read samples
-    int bytes_to_read = sizeof(cses);
-    while (bytes_to_read > 0) {
-      int bytes_read = 0;
-      if ((bytes_read = read(r_fd, ((void*)&cses) + bytes_read, bytes_to_read)) <= 0) {
-        // EOF
-        if (bytes_read == 0)
-          goto end;
+    int bytes_read = 0;
+    if ((bytes_read = read(r_fd, &cses, sizeof(cses))) <= 0) {
+      if (bytes_read == 0)
+        goto end;
 
-        perror("read()");
-        exit(EXIT_FAILURE);
-      }
-      bytes_to_read -= bytes_read;
+      perror("read()");
+      exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < 100; i++) {
+    int num_cses = bytes_read/sizeof(compressed_sample);
+    for (int i = 0; i < num_cses; i++) {
       complex_float cf;
       compressed_sample cs = cses[i];
-      complex16_to_complex_float(&cf, &cs.sample, 1);
 
-      // end of DFT samples, 
-      if (cs.freq <= freq_prev) {
+      if (cs.freq == -1) {
+        fft_iter++;
+        // end of DFT samples, write samples
         if (write(w_fd, fft, sizeof(fft)) < 0) {
           perror("write()");
           exit(EXIT_FAILURE);
         }
         memset(fft, 0, sizeof(fft));
+      } else {
+        complex16_to_complex_float(&cf, &cs.sample, 1);
+        fft[cs.freq] = cf;
       }
-      fft[cs.freq] = cf;
-      freq_prev = cs.freq;
     }
   } while(1);
 
 end:
+  fprintf(stderr, "DECOMPRESSION fft_iter: %d\n", fft_iter);
+  if (write(w_fd, fft, sizeof(fft)) < 0) {
+    perror("write()");
+    exit(EXIT_FAILURE);
+  }
+
   close(r_fd);
   close(w_fd);
   return 0;

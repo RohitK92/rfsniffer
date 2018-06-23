@@ -148,7 +148,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>compress_fft.iq</value>
+      <value>/tmp/compress_fft.iq</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -195,7 +195,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>capture.iq</value>
+      <value>/tmp/capture.iq</value>
     </param>
     <param>
       <key>_coordinate</key>

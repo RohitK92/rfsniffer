@@ -8,4 +8,4 @@ MIXER_GAIN=99
 LNA_GAIN=99
 SENSITIVITY_GAIN=8
 
-airspy_rx -h $SENSITIVITY_GAIN -r capture.iq -t $TYPE -a $SAMPLE_RATE_SPS -f $FREQ_MHZ
+airspy_rx -h $SENSITIVITY_GAIN -r /tmp/capture.iq -t $TYPE -a $SAMPLE_RATE_SPS -f $FREQ_MHZ

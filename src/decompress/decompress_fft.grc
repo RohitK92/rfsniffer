@@ -159,7 +159,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>decompress.iq</value>
+      <value>/tmp/decompress.iq</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -206,7 +206,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>decompress_fft.iq</value>
+      <value>/tmp/decompress_fft.iq</value>
     </param>
     <param>
       <key>_coordinate</key>
